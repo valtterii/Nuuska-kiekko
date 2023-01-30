@@ -1,0 +1,116 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset='utf-8'>
+    <meta http-equiv='X-UA-Compatible' content='IE=edge'>
+    <title>Page Title</title>
+    <meta name='viewport' content='width=device-width, initial-scale=1'>
+    <link rel='stylesheet' type='text/css' media='screen' href='main.css'>
+    <script src='main.js'></script>
+</head>
+<body>
+    <div class="kiekot-container">
+        <div class="kiekot-container-grid">
+            <div class="kiekko-grid"></div>
+            <div class="kiekko-grid new-grid1"></div>
+            <div class="kiekko-grid new-grid2"></div>
+        </div>
+    </div>
+    
+    <div class="kiekko-laatikko">
+        <img src="./img/loota.png" width="630px" />
+        <img src="./img/seina.png" width="765px" class="seina" />
+    </div>
+    
+    <div class="kiekot-valikoima">
+        <div>
+            <img src="./img/1.png" class="kiekko" onclick="handle(kiekot[0])" />
+        </div>
+        <div>
+            <img src="./img/2.png" class="kiekko" onclick="handle(kiekot[1])" />
+        </div>
+        <div>
+            <img src="./img/3.png" class="kiekko" onclick="handle(kiekot[2])" />
+        </div>
+        <div>
+            <img src="./img/4.png" class="kiekko" onclick="handle(kiekot[3])" />
+        </div>
+        <div>
+            <button class="kiekko-btn" id="reset-kiekot">Reset</button>
+        </div>
+    </div>
+    
+    <div class="odens-modal">
+        <div class="modal-content">
+          <span class="close">&times;</span>
+          <p>Laatikko on täynnä!</p>
+          <button class="kiekko-btn"> Siirry kassalle </button>
+        </div>
+    </div>
+</body>
+<script>
+
+let kiekot = [
+    "./img/1.png",
+    "./img/2.png",
+    "./img/3.png",
+    "./img/4.png",
+];
+
+let kiekkoja = 0;
+
+const grid = document.querySelector('.kiekko-grid');
+const grid1 = document.querySelector('.new-grid1');
+const grid2 = document.querySelector('.new-grid2');
+const modal = document.querySelector(".odens-modal");
+const closeBtn = document.querySelector(".close");
+
+function handle(tuote) {
+    kiekkoja += 1;
+    console.log(kiekkoja);
+    if (kiekkoja <= 8) {
+        createNewItem(grid, tuote) // luo uuden kiekon gridiin
+    }
+    else if ( kiekkoja <= 16 ) {
+        createNewItem(grid1, tuote)
+    }
+    else if (kiekkoja <= 24) {
+        createNewItem(grid2, tuote)
+    }
+    else {
+        displayModal() // kun tuotteita on yli 24, näytä modal ja estä uusien tuotteiden luominen
+    }
+}
+
+function displayModal() {
+	document.querySelector('.odens-modal').style.display="flex";
+	closeBtn.onclick = function() {
+		modal.style.display = "none";
+	}
+	window.onclick = function(event) {
+	if (event.target == modal) {
+			modal.style.display = "none";
+		}
+	}
+}
+
+function createNewItem(parentElement, tuotekuva) { // luo uuden kiekon
+	const kiekko = document.createElement("img");
+	const id = Date.now();
+	kiekko.setAttribute("id", id);
+	kiekko.setAttribute("src", tuotekuva);
+	kiekko.setAttribute("class", "kiekko-img slide-in-blurred-tr");
+	parentElement.appendChild(kiekko);
+}
+
+resetBtn = document.getElementById("reset-kiekot");
+	resetBtn.onclick = () => { // tyhjentää kaikki kiekot ja aloittaa alusta
+	kiekkoja = 0;
+	let divs = document.querySelectorAll('.kiekko-grid');
+	for (var i = 0; i < divs.length; i++) {
+		divs[i].innerHTML = ''
+	}
+}
+
+</script>
+</html>
